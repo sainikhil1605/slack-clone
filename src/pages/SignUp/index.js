@@ -7,7 +7,7 @@ import TelegramIcon from "@material-ui/icons/Telegram";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../../lib/formUtils/FormInput";
-import { registerWithEmailAndPassword } from "../../utils/store/firebase/firebase";
+import { registerWithEmailAndPassword } from "../../utils/firebase/firebase";
 import signUpStyles from "./SignUp.styles";
 const SignUp = (props) => {
   const styles = signUpStyles();
