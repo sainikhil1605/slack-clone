@@ -1,0 +1,3 @@
+const GET_CURRENT_PAGE = "GET_CURRENT_PAGE";
+
+export { GET_CURRENT_PAGE };

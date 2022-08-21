@@ -7,6 +7,7 @@ const sideBarStyles = makeStyles({
     maxWidth: "200px",
     position: "sticky",
     textAlign: "center",
+    padding: "10px",
     top: 0,
     backgroundColor: "#611f69",
     color: "white",
@@ -32,6 +33,47 @@ const sideBarStyles = makeStyles({
     color: "black",
     padding: "5px",
     textAlign: "left",
+  },
+  channelListContainer: {
+    "& .channelHeader": {
+      display: "flex",
+      justifyContent: "space-between",
+      flexDirection: "row",
+      paddingTop: "10px",
+      alignItems: "center",
+      "& .add-icon": {
+        alignSelf: "flex-end",
+      },
+      "& .MuiIconButton-root": {
+        padding: "0px",
+      },
+      "& .channel-icon-container": {
+        display: "flex",
+
+        "& >h1": {
+          fontSize: "15px",
+          margin: "0px",
+        },
+      },
+    },
+    "& .channel-list": {
+      textAlign: "left",
+    },
+    "& .dmHeader": {
+      "& >h1": {
+        fontSize: "15px",
+        margin: "0px",
+      },
+      display: "flex",
+    },
+    "& .directMessageContainer": {
+      marginTop: "10px",
+    },
+    "& .directMessages": {
+      "& >p": {
+        textAlign: "left",
+      },
+    },
   },
 });
 
