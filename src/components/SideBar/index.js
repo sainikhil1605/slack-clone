@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import AvatarPhoto from "../../static/images/photo1.jpg";
 import { getChannels } from "../../utils/firebase/channel";
 import { clearAuthData } from "../../utils/store/auth/auth.reducers";
+import AvatarModal from "../Avatar/index";
 import ChannelList from "./ChannelList";
 import DirectMessages from "./DirectMessages";
 import { sideBarStyles } from "./SideBar.styles";
@@ -13,29 +14,26 @@ const SideBar = () => {
   const styles = sideBarStyles();
   const [expanded, setExpanded] = useState(false);
   const { userName } = useSelector((store) => store.auth);
-  const channelList = [
-    {
-      name: "general",
-    },
-    {
-      name: "random",
-    },
-  ];
 
   const messages = [
     {
       content: "Hello",
     },
   ];
+  const { uid } = useSelector((state) => state.auth);
+  const [channelList, setChanneList] = useState([]);
+  const [isAvatarModalOpen, setAvatarModalOpen] = useState(false);
   useEffect(() => {
-    getChannels();
+    const getData = async () => {
+      const data = await getChannels(uid);
+      setChanneList(data);
+    };
+    getData();
   }, []);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
-    console.log("boom");
     if (!localStorage.getItem("accessToken")) {
-      console.log("cool");
       navigate("/login");
     }
   }, []);
@@ -43,39 +41,55 @@ const SideBar = () => {
     dispatch(clearAuthData());
     navigate("/login");
   };
+  const { avatarURL } = useSelector((state) => state.auth);
+
   return (
-    <div className={styles.sideBarContainer}>
-      <div className={styles.avatarContainer}>
-        <Avatar alt="Remy Sharp" src={AvatarPhoto} />
-        <Typography variant="subtitle1" className="avatarName">
-          {userName}
-        </Typography>
-        <IconButton onClick={() => setExpanded(!expanded)}>
-          <ExpandMoreIcon style={{ color: "#fff" }} />
-        </IconButton>
-        {expanded && (
-          <ul className={styles.navDropDown}>
-            <li>
-              <Button style={{ textTransform: "none" }}>
-                Signed in as {userName}
-              </Button>
-            </li>
-            <li>
-              <Button style={{ textTransform: "none" }}>Change Avatar</Button>
-            </li>
-            <li>
-              <Button style={{ textTransform: "none" }} onClick={handleSignOut}>
-                Sign Out
-              </Button>
-            </li>
-          </ul>
-        )}
+    channelList && (
+      <div className={styles.sideBarContainer}>
+        <div className={styles.avatarContainer}>
+          <Avatar alt="Remy Sharp" src={avatarURL || AvatarPhoto} />
+          <Typography variant="subtitle1" className="avatarName">
+            {userName}
+          </Typography>
+          <IconButton onClick={() => setExpanded(!expanded)}>
+            <ExpandMoreIcon style={{ color: "#fff" }} />
+          </IconButton>
+          <AvatarModal
+            isAvatarModalOpen={isAvatarModalOpen}
+            setAvatarModalOpen={setAvatarModalOpen}
+          />
+          {expanded && (
+            <ul className={styles.navDropDown}>
+              <li>
+                <Button style={{ textTransform: "none" }}>
+                  Signed in as {userName}
+                </Button>
+              </li>
+              <li>
+                <Button
+                  style={{ textTransform: "none" }}
+                  onClick={() => setAvatarModalOpen(!isAvatarModalOpen)}
+                >
+                  Change Avatar
+                </Button>
+              </li>
+              <li>
+                <Button
+                  style={{ textTransform: "none" }}
+                  onClick={handleSignOut}
+                >
+                  Sign Out
+                </Button>
+              </li>
+            </ul>
+          )}
+        </div>
+        <div className={styles.channelListContainer}>
+          <ChannelList channelList={channelList} />
+          <DirectMessages messages={messages} userName={userName} />
+        </div>
       </div>
-      <div className={styles.channelListContainer}>
-        <ChannelList channelList={channelList} />
-        <DirectMessages messages={messages} userName={userName} />
-      </div>
-    </div>
+    )
   );
 };
 export default SideBar;

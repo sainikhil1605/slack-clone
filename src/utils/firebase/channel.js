@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, getDocs, where } from "firebase/firestore";
 import { db } from "./init";
 
 const addChannel = async ({ channelName, channelAbout }) => {
@@ -8,15 +8,22 @@ const addChannel = async ({ channelName, channelAbout }) => {
       createdBy: uid,
       name: channelName,
       about: channelAbout,
-      authProvider: "local",
+      members: [uid],
     });
   } catch (err) {
     console.log(err);
   }
 };
-const getChannels = async () => {
-  const dbSnapShot = await getDocs(collection(db, "channels"));
-  dbSnapShot.forEach((data) => {});
+const getChannels = async (uid) => {
+  const dbSnapShot = await getDocs(
+    collection(db, "channels"),
+    where("members", "array-contains", uid)
+  );
+  let channels = [];
+  dbSnapShot.forEach((data) => {
+    channels.push(data.data());
+  });
+  return channels;
 };
 
 export { addChannel, getChannels };

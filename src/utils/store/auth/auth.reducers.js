@@ -11,12 +11,13 @@ const setUid = (uId) => {
     payload: uId,
   };
 };
-const setAuthData = (email, userName) => {
+const setAuthData = (email, userName, avatarURL) => {
   return {
     type: SET_AUTH_DATA,
     payload: {
       email,
       userName,
+      avatarURL,
     },
   };
 };
@@ -39,10 +40,19 @@ const clearAuthData = () => {
     payload: {},
   };
 };
+const setImageURL = (avatarURL) => {
+  return {
+    type: SET_AUTH_DATA,
+    payload: {
+      avatarURL,
+    },
+  };
+};
 const initialState = {
   uid: "",
   userName: "",
   email: "",
+  avatarURL: "",
 };
 
 const authReducer = (state = initialState, action) => {
@@ -69,4 +79,11 @@ const authReducer = (state = initialState, action) => {
       return state;
   }
 };
-export { setUid, authReducer, setAuthData, setLoginDetails, clearAuthData };
+export {
+  setUid,
+  authReducer,
+  setAuthData,
+  setLoginDetails,
+  clearAuthData,
+  setImageURL,
+};

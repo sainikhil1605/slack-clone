@@ -18,6 +18,7 @@ const AddChannel = ({ isModalOpen, setIsModalOpen }) => {
   };
   const handleChannelAdd = () => {
     addChannel(chnlAddDetails);
+    setIsModalOpen(false);
   };
   return (
     <ModalUI

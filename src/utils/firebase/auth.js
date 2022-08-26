@@ -2,9 +2,21 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import store from "../store";
-import { setAuthData, setLoginDetails } from "../store/auth/auth.reducers";
+import {
+  setAuthData,
+  setImageURL,
+  setLoginDetails,
+} from "../store/auth/auth.reducers";
 import { auth, db } from "./init";
 
 const logInWithEmailAndPassword = async (email, password) => {
@@ -42,12 +54,28 @@ const getUserDetails = async (uid) => {
   const q = query(collection(db, "users"), where("uid", "==", uid));
   const dataSnapShot = await getDocs(q);
   dataSnapShot.forEach((data) => {
-    const { email, name } = data.data();
-    store.dispatch(setAuthData(email, name));
+    const { email, name, avatarURL } = data.data();
+    store.dispatch(setAuthData(email, name, avatarURL));
   });
+};
+const updateImageUrl = async (url) => {
+  const {
+    auth: { uid },
+  } = store.getState();
+  // console.log(data);
+  const q = query(collection(db, "users"), where("uid", "==", uid));
+  const dataSnapShot = await getDocs(q);
+  dataSnapShot.forEach((data) => {
+    const docRef = doc(db, "users", data.id);
+    updateDoc(docRef, {
+      avatarURL: url,
+    });
+  });
+  store.dispatch(setImageURL(url));
 };
 export {
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
   getUserDetails,
+  updateImageUrl,
 };

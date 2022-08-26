@@ -5,6 +5,7 @@ import "./App.css";
 import Home from "./pages/Home";
 import LogIn from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import { getUserDetails } from "./utils/firebase";
 import { setUid } from "./utils/store/auth/auth.reducers";
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
     if (accessToken) {
       const uid = localStorage.getItem("userId");
       dispatch(setUid(uid));
+      dispatch(getUserDetails(uid));
     }
   };
   useEffect(() => {
