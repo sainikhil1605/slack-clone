@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core";
-
+import styled from "styled-components";
 const sideBarStyles = makeStyles({
   sideBarContainer: {
     // display: "flex",
@@ -34,6 +34,7 @@ const sideBarStyles = makeStyles({
     padding: "5px",
     textAlign: "left",
   },
+
   channelListContainer: {
     "& .channelHeader": {
       display: "flex",
@@ -56,6 +57,7 @@ const sideBarStyles = makeStyles({
         },
       },
     },
+
     "& .channel-list": {
       textAlign: "left",
     },
@@ -76,5 +78,29 @@ const sideBarStyles = makeStyles({
     },
   },
 });
-
-export default sideBarStyles;
+const ChannelModal = styled.div`
+  background-color: white;
+  max-width: 500px;
+  margin: auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 20px;
+  .channel-modal-header {
+    text-align: center;
+  }
+  .channel-body {
+    display: flex;
+    flex-direction: column;
+    align-item: center;
+    & > div {
+      padding-top: 20px;
+      display: flex;
+      justify-content: center;
+      & > .MuiFormControl-root {
+        width: 100%;
+      }
+    }
+  }
+`;
+export { sideBarStyles, ChannelModal };

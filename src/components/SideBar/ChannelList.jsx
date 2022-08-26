@@ -1,6 +1,9 @@
 import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
+import { useState } from "react";
+import AddChannel from "../Channel/AddChannel";
 const ChannelList = (props) => {
   const { channelList } = props;
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <>
       <div class="channelHeader">
@@ -10,8 +13,15 @@ const ChannelList = (props) => {
         </div>
 
         <div>
-          <div className="add-icon">+</div>
+          <div
+            className="add-icon"
+            onClick={() => setIsModalOpen(true)}
+            style={{ cursor: "pointer" }}
+          >
+            +
+          </div>
         </div>
+        <AddChannel isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
       </div>
       <div className="channel-list">
         {channelList.map((channel) => {

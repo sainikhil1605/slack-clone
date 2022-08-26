@@ -1,20 +1,32 @@
-import { Provider } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import SideBar from "./components/SideBar";
+import Home from "./pages/Home";
+import LogIn from "./pages/Login";
 import SignUp from "./pages/SignUp";
-import store from "./utils/store";
+import { setUid } from "./utils/store/auth/auth.reducers";
 
 function App() {
+  const dispatch = useDispatch();
+  const initApp = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      const uid = localStorage.getItem("userId");
+      dispatch(setUid(uid));
+    }
+  };
+  useEffect(() => {
+    initApp();
+  });
   return (
-    <Provider store={store}>
-      <div>
-        <Routes>
-          <Route index element={<SideBar />} />
-          <Route path="register" element={<SignUp />} />
-        </Routes>
-      </div>
-    </Provider>
+    <div>
+      <Routes>
+        <Route index element={<Home />} />
+        <Route path="register" element={<SignUp />} />
+        <Route path="login" element={<LogIn />} />
+      </Routes>
+    </div>
   );
 }
 

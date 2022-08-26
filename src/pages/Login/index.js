@@ -1,37 +1,36 @@
 import { Button } from "@material-ui/core";
 import LockIcon from "@material-ui/icons/Lock";
 import MailIcon from "@material-ui/icons/Mail";
-import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
-import RefreshIcon from "@material-ui/icons/Refresh";
 import TelegramIcon from "@material-ui/icons/Telegram";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../../lib/formUtils/FormInput";
-import { registerWithEmailAndPassword } from "../../utils/firebase";
-import signUpStyles from "./SignUp.styles";
-const SignUp = (props) => {
+import { logInWithEmailAndPassword } from "../../utils/firebase";
+import signUpStyles from "../SignUp/SignUp.styles";
+const LogIn = (props) => {
   const styles = signUpStyles();
   const [userDetails, setUserDetails] = useState({
-    username: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({
-    username: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
+  useEffect(() => {
+    if (localStorage.getItem("accessToken")) {
+      navigate("/");
+    }
+  }, []);
   const [submitError, setSubmitError] = useState("");
   const handleSubmit = async () => {
-    const { username, email, password } = userDetails;
-    const res = await registerWithEmailAndPassword(username, email, password);
+    const { email, password } = userDetails;
+    const res = await logInWithEmailAndPassword(email, password);
     if (res === true) {
-      navigation.navigate("/");
+      navigate("/");
     } else {
-      setSubmitError("User Already Exists");
+      setSubmitError(res.message);
     }
   };
   const handleChange = (e) => {
@@ -43,13 +42,6 @@ const SignUp = (props) => {
         setErrors({ ...errors, email: "" });
       }
       setUserDetails({ ...userDetails, email: value });
-    } else if (name === "confirmPassword") {
-      if (userDetails.password !== value) {
-        setErrors({ ...errors, confirmPassword: "Passwords dont match" });
-      } else {
-        setErrors({ ...errors, confirmPassword: "" });
-      }
-      setUserDetails({ ...userDetails, confirmPassword: value });
     } else if (name === "password") {
       if (userDetails.password.length < 6) {
         setErrors({
@@ -75,22 +67,9 @@ const SignUp = (props) => {
       <div className={styles.signUpInnerContainer}>
         <div className={styles.header}>
           <TelegramIcon style={{ width: "100px", height: "100px" }} />
-          <h1>Register for Chat App</h1>
+          <h1>Login into Chat App</h1>
         </div>
         <div className={styles.inputFieldsContainer}>
-          <div className={styles.inputField}>
-            <FormInput
-              placeholder="Username"
-              variant="outlined"
-              InputProps={{
-                startAdornment: <PersonOutlineIcon />,
-              }}
-              name="username"
-              onChange={handleChange}
-              value={userDetails.username}
-              error={errors?.username}
-            />
-          </div>
           <div className={styles.inputField}>
             <FormInput
               placeholder="Email Address"
@@ -121,21 +100,6 @@ const SignUp = (props) => {
             />
           </div>
           <div className={styles.inputField}>
-            <FormInput
-              placeholder="Re-Enter Passwore"
-              variant="outlined"
-              InputProps={{
-                startAdornment: <RefreshIcon />,
-              }}
-              type="password"
-              name="confirmPassword"
-              onChange={handleChange}
-              value={userDetails.confirmPassword}
-              error={errors?.confirmPassword}
-              helperText={errors?.confirmPassword}
-            />
-          </div>
-          <div className={styles.inputField}>
             <Button
               variant="contained"
               color="primary"
@@ -152,4 +116,4 @@ const SignUp = (props) => {
     </div>
   );
 };
-export default SignUp;
+export default LogIn;
