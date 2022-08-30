@@ -4,7 +4,7 @@ const sideBarStyles = makeStyles({
   sideBarContainer: {
     // display: "flex",
     height: "100vh",
-    maxWidth: "200px",
+    minWidth: "200px",
     position: "sticky",
     textAlign: "center",
     padding: "10px",

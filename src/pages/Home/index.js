@@ -1,3 +1,4 @@
+import Chat from "../../components/Chat";
 import SideBar from "../../components/SideBar";
 import { homeStyles } from "./Home.styles";
 
@@ -6,6 +7,7 @@ const Home = () => {
   return (
     <div className={styles.homeContainer}>
       <SideBar />
+      <Chat />
     </div>
   );
 };

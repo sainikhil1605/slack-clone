@@ -3,7 +3,7 @@ import LockIcon from "@material-ui/icons/Lock";
 import MailIcon from "@material-ui/icons/Mail";
 import TelegramIcon from "@material-ui/icons/Telegram";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FormInput from "../../lib/formUtils/FormInput";
 import { logInWithEmailAndPassword } from "../../utils/firebase";
 import signUpStyles from "../SignUp/SignUp.styles";
@@ -98,6 +98,11 @@ const LogIn = (props) => {
               value={userDetails.password}
               error={errors?.password}
             />
+          </div>
+          <div>
+            <p>
+              Don't have a account? <Link to={"/register"}>Sign Up</Link>
+            </p>
           </div>
           <div className={styles.inputField}>
             <Button

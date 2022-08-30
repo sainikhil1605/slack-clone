@@ -28,12 +28,28 @@ const Avatar = ({ isAvatarModalOpen, setAvatarModalOpen }) => {
   return (
     <ModalUI open={isAvatarModalOpen}>
       <ChannelModal>
-        <div>
-          <div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
             {fileUrl && (
-              <img src={fileUrl} width="100%" height="100%" alt="avatar" />
+              <img src={fileUrl} width="100px" height="100px" alt="avatar" />
             )}
-            <input type="file" onChange={(e) => handleChange(e)} />
+            <input
+              type="file"
+              onChange={(e) => handleChange(e)}
+              style={{ marginTop: "10px" }}
+            />
           </div>
           <Button onClick={() => handleClose()}>Submit</Button>
         </div>

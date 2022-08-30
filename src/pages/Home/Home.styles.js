@@ -9,6 +9,7 @@ const homeStyles = makeStyles({
       position: "relative",
       top: "50%",
     },
+    display: "flex",
   },
 });
 export { homeStyles };

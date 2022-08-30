@@ -29,7 +29,7 @@ const SideBar = () => {
       setChanneList(data);
     };
     getData();
-  }, []);
+  }, [uid]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
